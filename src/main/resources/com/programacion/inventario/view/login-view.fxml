@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.programacion.inventario.controller.LoginController">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+
+    <!-- Título -->
+    <Label text="Sistema de Gestión - Login" textAlignment="CENTER">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+
+    <!-- Información sobre el almacenamiento -->
+    <Label text="Los usuarios se almacenan en archivo TXT" textAlignment="CENTER" textFill="#666666">
+        <font>
+            <Font size="12.0" />
+        </font>
+    </Label>
+
+    <!-- Formulario de Login -->
+    <GridPane hgap="10.0" vgap="15.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="80.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="200.0" prefWidth="220.0" />
+        </columnConstraints>
+
+        <Label text="Usuario:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="usernameField" promptText="Ingrese su usuario" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <PasswordField fx:id="passwordField" promptText="Ingrese su contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    </GridPane>
+
+    <!-- Botones -->
+    <HBox alignment="CENTER" spacing="15.0">
+        <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="120.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Iniciar Sesión" />
+        <Button fx:id="registerButton" onAction="#handleRegister" prefWidth="120.0" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Registrarse" />
+    </HBox>
+
+    <!-- Mensaje de estado -->
+    <Label fx:id="messageLabel" textAlignment="CENTER" textFill="RED" />
+
+    <!-- Información para el estudiante -->
+    <Separator />
+    <VBox spacing="5.0">
+        <Label text="Usuarios por defecto para pruebas:" textFill="#333333">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label text="• Usuario: admin | Contraseña: admin123" textFill="#666666" />
+        <Label text="• Usuario: profesor | Contraseña: clase2024" textFill="#666666" />
+        <Label text="📁 Los datos se guardan en: data/usuarios.txt" textFill="#666666" />
+    </VBox>
+</VBox>
