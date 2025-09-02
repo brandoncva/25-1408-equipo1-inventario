@@ -5,7 +5,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -16,11 +21,13 @@ public class LoginController implements Initializable {
     @FXML private Label messageLabel;
 
     private FileManager fileManager;
+    private String USERS_FILE;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Inicializar los managers
         fileManager = new FileManager();
+        this.USERS_FILE = fileManager.DATA_DIRECTORY + "/usuarios.txt";
 
         // Configurar eventos de teclado (Enter para login)
         passwordField.setOnAction(event -> handleLogin());
@@ -61,7 +68,7 @@ public class LoginController implements Initializable {
 
         try {
             // CONCEPTO CLAVE: Validación de credenciales desde archivo TXT
-            boolean isValid = fileManager.validateUserCredentials(username, password);
+            boolean isValid = validateUserCredentials(username, password);
 
             if (isValid) {
                 showMessage("¡Login exitoso! Cargando sistema principal...", "success");
@@ -127,7 +134,7 @@ public class LoginController implements Initializable {
         }
 
         // Verificar si el usuario ya existe
-        if (fileManager.validateUserCredentials(username, "dummy")) {
+        if (validateUserCredentials(username, "dummy")) {
             // Si las credenciales son válidas con cualquier contraseña dummy,
             // significa que el usuario ya existe
             showMessage("El usuario ya existe. Intente con otro nombre.", "error");
@@ -139,7 +146,7 @@ public class LoginController implements Initializable {
 
         try {
             // CONCEPTO CLAVE: Guardar nuevas credenciales en archivo TXT
-            boolean success = fileManager.saveUserCredentials(username, password);
+            boolean success = saveUserCredentials(username, password);
 
             if (success) {
                 showMessage("¡Usuario registrado exitosamente! Puede hacer login ahora.", "success");
@@ -193,4 +200,37 @@ public class LoginController implements Initializable {
         registerButton.setDisable(disabled);
     }
 
+    private boolean saveUserCredentials(String username, String password) {
+        fileManager.writeToFile(USERS_FILE, username + ":" + password + "\n", true);
+        System.out.println("Credenciales guardadas para usuario: " + username);
+        return true;
+    }
+
+    private void createDefaultUser() {
+        saveUserCredentials("admin", "admin123");
+        saveUserCredentials("profesor", "clase2024");
+    }
+
+    public boolean validateUserCredentials(String username, String password) {
+        try {
+            // Verificar si el archivo existe
+            if (!fileManager.fileExists(USERS_FILE)) {
+                System.out.println("Archivo de usuarios no existe, creando usuario por defecto...");
+                createDefaultUser();
+            }
+
+            String line = fileManager.readFromFile(USERS_FILE);
+
+            String[] credentials = line.split(":");
+            if (credentials.length == 2) {
+                if (credentials[0].equals(username) && credentials[1].equals(password)) {
+                    System.out.println("Credenciales válidas para: " + username);
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Credenciales inválidas para: " + username);
+        }
+        return false;
+    }
 }
