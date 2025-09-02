@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -207,6 +208,7 @@ public class LoginController implements Initializable {
     }
 
     private void createDefaultUser() {
+        //SEEDER
         saveUserCredentials("admin", "admin123");
         saveUserCredentials("profesor", "clase2024");
     }
@@ -219,13 +221,16 @@ public class LoginController implements Initializable {
                 createDefaultUser();
             }
 
-            String line = fileManager.readFromFile(USERS_FILE);
+            List<String> listUsuarios = fileManager.readFromFile(USERS_FILE);
 
-            String[] credentials = line.split(":");
-            if (credentials.length == 2) {
-                if (credentials[0].equals(username) && credentials[1].equals(password)) {
-                    System.out.println("Credenciales válidas para: " + username);
-                    return true;
+            for(String line : listUsuarios) {
+                if (line.trim().isEmpty()) continue; // Saltar líneas vacías
+                String[] credentials = line.split(":");
+                if (credentials.length == 2) {
+                    if (credentials[0].equals(username) && credentials[1].equals(password)) {
+                        System.out.println("Credenciales válidas para: " + username);
+                        return true;
+                    }
                 }
             }
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class FileManager {
     // Directorio donde se almacenarán los archivos de la aplicación
@@ -26,6 +27,7 @@ public class FileManager {
         }
     }
 
+    //ESCRIBIR
     public void writeToFile(String filename, String content, boolean append) {
         try (FileWriter writer = new FileWriter(filename, append)) {
             writer.write(content);
@@ -35,17 +37,19 @@ public class FileManager {
         }
     }
 
-    public String readFromFile(String filename) {
+    //LEER
+    public List<String> readFromFile(String filename) {
+        List<String> listLine = new java.util.ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue; // Saltar líneas vacías
-                return line;
+                listLine.add(line);
             }
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
-        return null;
+        return listLine;
     }
 
     public boolean fileExists(String filename) {
@@ -68,4 +72,8 @@ public class FileManager {
             return -1;
         }
     }
+
+    // metodo hash
+    // encriptar
+    // desencriptar
 }
