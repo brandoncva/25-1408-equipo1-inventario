@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.programacion.inventario.controller.UsuariosController"
+      prefHeight="600.0" prefWidth="800.0" spacing="20" styleClass="main-container">
+
+    <stylesheets>
+        <String fx:value="/com/programacion/inventario/styles/main-styles.css"/>
+    </stylesheets>
+
+    <!-- Header de la pantalla -->
+    <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        
+        <Button text="← Volver al Menú" styleClass="back-button" onAction="#volverAlMenu"/>
+        
+        <VBox spacing="5">
+            <Label text="👥 Gestión de Usuarios" styleClass="header-title"/>
+            <Label text="Administra usuarios del sistema" styleClass="header-subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Contenido principal -->
+    <VBox spacing="20" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets top="30" right="30" bottom="30" left="30"/>
+        </padding>
+        
+        <!-- Formulario de usuario -->
+        <VBox styleClass="form-container" spacing="15">
+            <Label text="Agregar Nuevo Usuario" styleClass="section-title"/>
+            
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <VBox spacing="5">
+                    <Label text="Nombre de Usuario:"/>
+                    <TextField fx:id="usernameField" styleClass="form-field" promptText="Ingrese nombre de usuario"/>
+                </VBox>
+                
+                <VBox spacing="5">
+                    <Label text="Contraseña:"/>
+                    <PasswordField fx:id="passwordField" styleClass="form-field" promptText="Ingrese contraseña"/>
+                </VBox>
+                
+                <VBox spacing="5">
+                    <Label text="Rol:"/>
+                    <ComboBox fx:id="roleComboBox" styleClass="form-field" promptText="Seleccione rol"/>
+                </VBox>
+                
+                <VBox spacing="5">
+                    <Label text=""/>
+                    <Button text="➕ Agregar" styleClass="form-button" onAction="#agregarUsuario"/>
+                </VBox>
+            </HBox>
+        </VBox>
+        
+        <!-- Lista de usuarios -->
+        <VBox styleClass="form-container" spacing="15">
+            <Label text="Usuarios del Sistema" styleClass="section-title"/>
+            
+            <TableView fx:id="usuariosTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn text="Usuario" fx:id="colUsuario"/>
+                    <TableColumn text="Rol" fx:id="colRol"/>
+                    <TableColumn text="Acciones" fx:id="colAcciones"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </VBox>
+</VBox>

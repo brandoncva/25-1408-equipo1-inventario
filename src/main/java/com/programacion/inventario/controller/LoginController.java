@@ -1,6 +1,7 @@
 package com.programacion.inventario.controller;
 
 import com.programacion.inventario.util.FileManager;
+import com.programacion.inventario.util.NavigationManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,7 +12,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -84,12 +87,21 @@ public class LoginController implements Initializable {
 
                     @Override
                     protected void succeeded() {
-                        // ::TODO:Navegar a la ventana principal
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Login Exitoso");
-                        alert.setHeaderText(null);
-                        alert.setContentText("¡Bienvenido, " + username + "!");
-                        alert.showAndWait();
+                        // Navegar a la ventana principal usando NavigationManager
+                        try {
+                            // Crear parámetros para pasar al MainController
+                            Map<String, Object> parameters = new HashMap<>();
+                            parameters.put("username", username);
+                            parameters.put("role", "Usuario"); // Por defecto, se puede mejorar
+                            
+                            // Navegar a la pantalla principal
+                            NavigationManager navigationManager = NavigationManager.getInstance();
+                            navigationManager.navigateTo(NavigationManager.Screen.MAIN, parameters);
+                            
+                        } catch (Exception e) {
+                            System.err.println("Error al navegar: " + e.getMessage());
+                            showMessage("Error al cargar la pantalla principal", "error");
+                        }
                     }
                 };
 
