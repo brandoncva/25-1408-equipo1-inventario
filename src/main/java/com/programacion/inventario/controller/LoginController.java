@@ -6,6 +6,8 @@ import com.programacion.inventario.util.SecurityUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -19,6 +21,9 @@ public class LoginController implements Initializable {
     @FXML private Button loginButton;
     @FXML private Button registerButton;
     @FXML private Label messageLabel;
+    @FXML private Button decryptButton;
+    @FXML private VBox securityReportBox;
+    @FXML private Text securityReportText;
 
     private FileManager fileManager;
     private String USERS_FILE;
@@ -37,7 +42,10 @@ public class LoginController implements Initializable {
         usernameField.textProperty().addListener((obs, oldText, newText) -> clearMessage());
         passwordField.textProperty().addListener((obs, oldText, newText) -> clearMessage());
 
-        System.out.println("LoginController inicializado - Sistema de almacenamiento TXT listo");
+        // Ocultar panel de reporte inicialmente
+        securityReportBox.setVisible(false);
+
+        System.out.println("LoginController inicializado - Sistema de cifrado listo");
     }
 
     /**
@@ -316,4 +324,95 @@ public class LoginController implements Initializable {
             System.err.println("Error migrando archivo de usuarios: " + e.getMessage());
         }
     }
+
+    /**
+     * Maneja la acción de descifrar y mostrar credenciales
+     */
+    @FXML
+    private void handleDecryptCredentials() {
+        try {
+            if (!fileManager.fileExists(USERS_FILE)) {
+                showMessage("No existe archivo de usuarios para analizar", "error");
+                return;
+            }
+
+            List<String> userLines = fileManager.readFromFile(USERS_FILE);
+
+            // Generar reporte de seguridad
+            String report = SecurityUtils.generateSecurityReport(userLines);
+
+            // Mostrar reporte
+            securityReportText.setText(report);
+            securityReportBox.setVisible(true);
+
+            showMessage("Reporte de seguridad generado correctamente", "success");
+
+        } catch (Exception e) {
+            showMessage("Error al generar reporte: " + e.getMessage(), "error");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Cierra el panel de reporte de seguridad
+     */
+    @FXML
+    private void closeSecurityReport() {
+        securityReportBox.setVisible(false);
+    }
+
+    /**
+     * Exporta el reporte de seguridad a un archivo de texto
+     */
+    @FXML
+    private void exportSecurityReport() {
+        try {
+            String report = securityReportText.getText();
+            String reportFile = fileManager.DATA_DIRECTORY + "/security_report.txt";
+
+            fileManager.writeToFile(reportFile, report, false);
+            showMessage("Reporte exportado a: " + reportFile, "success");
+
+        } catch (Exception e) {
+            showMessage("Error al exportar reporte: " + e.getMessage(), "error");
+        }
+    }
+
+    /**
+     * Migra todos los usuarios a formato cifrado
+     */
+    @FXML
+    private void migrateAllUsers() {
+        try {
+            if (!fileManager.fileExists(USERS_FILE)) {
+                showMessage("No existe archivo de usuarios", "error");
+                return;
+            }
+
+            List<String> userLines = fileManager.readFromFile(USERS_FILE);
+            boolean migrated = false;
+
+            for (int i = 0; i < userLines.size(); i++) {
+                String line = userLines.get(i);
+                if (line.trim().isEmpty()) continue;
+
+                if (SecurityUtils.isPlainTextFormat(line)) {
+                    String migratedLine = SecurityUtils.migrateToHashedFormat(line);
+                    userLines.set(i, migratedLine);
+                    migrated = true;
+                }
+            }
+
+            if (migrated) {
+                fileManager.rewriteFile(USERS_FILE, userLines);
+                showMessage("Todos los usuarios migrados a formato cifrado", "success");
+            } else {
+                showMessage("Todos los usuarios ya están en formato cifrado", "info");
+            }
+
+        } catch (Exception e) {
+            showMessage("Error en migración: " + e.getMessage(), "error");
+        }
+    }
 }
+

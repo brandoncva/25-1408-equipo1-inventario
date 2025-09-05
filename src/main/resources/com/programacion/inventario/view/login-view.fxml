@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.programacion.inventario.controller.LoginController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.programacion.inventario.controller.LoginController">
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>
@@ -26,7 +19,7 @@
     </Label>
 
     <!-- Información sobre el almacenamiento -->
-    <Label text="Los usuarios se almacenan en archivo TXT" textAlignment="CENTER" textFill="#666666">
+    <Label text="Sistema de cifrado SHA-256 activo" textAlignment="CENTER" textFill="#666666">
         <font>
             <Font size="12.0" />
         </font>
@@ -44,31 +37,49 @@
 
         <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <PasswordField fx:id="passwordField" promptText="Ingrese su contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
     </GridPane>
 
-    <!-- Botones -->
+    <!-- Botones principales -->
     <HBox alignment="CENTER" spacing="15.0">
         <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="120.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Iniciar Sesión" />
         <Button fx:id="registerButton" onAction="#handleRegister" prefWidth="120.0" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Registrarse" />
     </HBox>
 
+    <!-- Botones de seguridad -->
+    <HBox alignment="CENTER" spacing="10.0">
+        <Button fx:id="decryptButton" onAction="#handleDecryptCredentials" prefWidth="180.0" style="-fx-background-color: #FF9800; -fx-text-fill: white;" text="🔒 Ver Reporte Seguridad" />
+        <Button onAction="#migrateAllUsers" prefWidth="150.0" style="-fx-background-color: #9C27B0; -fx-text-fill: white;" text="🔄 Migrar Usuarios" />
+    </HBox>
+
     <!-- Mensaje de estado -->
     <Label fx:id="messageLabel" textAlignment="CENTER" textFill="RED" />
+
+    <!-- Panel de reporte de seguridad (oculto inicialmente) -->
+    <VBox fx:id="securityReportBox" spacing="10" style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 10; -fx-background-color: #f9f9f9;" visible="false">
+        <HBox alignment="CENTER_RIGHT">
+            <Button onAction="#closeSecurityReport" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="X" />
+        </HBox>
+        <ScrollPane fitToWidth="true" maxHeight="200">
+            <Text fx:id="securityReportText" wrappingWidth="350" />
+        </ScrollPane>
+        <Button onAction="#exportSecurityReport" style="-fx-background-color: #607D8B; -fx-text-fill: white;" text="💾 Exportar Reporte" />
+    </VBox>
 
     <!-- Información para el estudiante -->
     <Separator />
     <VBox spacing="5.0">
-        <Label text="Usuarios por defecto para pruebas:" textFill="#333333">
+        <Label text="Funciones de descifrado implementadas:" textFill="#333333">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <Label text="• Usuario: admin | Contraseña: admin123" textFill="#666666" />
-        <Label text="• Usuario: profesor | Contraseña: clase2024" textFill="#666666" />
-        <Label text="📁 Los datos se guardan en: data/usuarios.txt" textFill="#666666" />
+        <Label text="• SHA-256 con salt único por usuario" textFill="#666666" />
+        <Label text="• Reporte completo de seguridad" textFill="#666666" />
+        <Label text="• Migración automática de formatos" textFill="#666666" />
+        <Label text="📁 Datos cifrados en: data/usuarios.txt" textFill="#666666" />
     </VBox>
 </VBox>
