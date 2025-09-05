@@ -73,7 +73,30 @@ public class FileManager {
         }
     }
 
-    // metodo hash
-    // encriptar
-    // desencriptar
+    /**
+     * Reescribe completamente un archivo
+     */
+    public boolean rewriteFile(String filename, List<String> lines) {
+        try {
+            // Crear archivo temporal
+            String tempFile = filename + ".tmp";
+            writeToFile(tempFile, "", false);
+
+            for (String line : lines) {
+                writeToFile(tempFile, line + "\n", true);
+            }
+
+            // Reemplazar archivo original
+            deleteFile(filename);
+            java.nio.file.Files.move(
+                    java.nio.file.Paths.get(tempFile),
+                    java.nio.file.Paths.get(filename)
+            );
+
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error reescribiendo archivo: " + e.getMessage());
+            return false;
+        }
+    }
 }
