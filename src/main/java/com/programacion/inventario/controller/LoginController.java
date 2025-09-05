@@ -2,16 +2,12 @@ package com.programacion.inventario.controller;
 
 import com.programacion.inventario.util.FileManager;
 import com.programacion.inventario.util.NavigationManager;
+import com.programacion.inventario.util.SecurityUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,11 +89,11 @@ public class LoginController implements Initializable {
                             Map<String, Object> parameters = new HashMap<>();
                             parameters.put("username", username);
                             parameters.put("role", "Usuario"); // Por defecto, se puede mejorar
-                            
+
                             // Navegar a la pantalla principal
                             NavigationManager navigationManager = NavigationManager.getInstance();
                             navigationManager.navigateTo(NavigationManager.Screen.MAIN, parameters);
-                            
+
                         } catch (Exception e) {
                             System.err.println("Error al navegar: " + e.getMessage());
                             showMessage("Error al cargar la pantalla principal", "error");
@@ -213,41 +209,111 @@ public class LoginController implements Initializable {
         registerButton.setDisable(disabled);
     }
 
+    /**
+     * Guarda credenciales de usuario con cifrado SHA-256
+     */
     private boolean saveUserCredentials(String username, String password) {
-        fileManager.writeToFile(USERS_FILE, username + ":" + password + "\n", true);
-        System.out.println("Credenciales guardadas para usuario: " + username);
-        return true;
+        try {
+            String salt = SecurityUtils.generateSalt();
+            String hashedPassword = SecurityUtils.hashPassword(password, salt);
+            String userRecord = username + ":" + hashedPassword + ":" + salt + "\n";
+
+            fileManager.writeToFile(USERS_FILE, userRecord, true);
+            System.out.println("Credenciales cifradas guardadas para usuario: " + username);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error al guardar credenciales cifradas: " + e.getMessage());
+            return false;
+        }
     }
 
     private void createDefaultUser() {
-        //SEEDER
+        //SEEDER con cifrado
         saveUserCredentials("admin", "admin123");
         saveUserCredentials("profesor", "clase2024");
     }
 
+    /**
+     * Valida credenciales de usuario contra hashes almacenados
+     */
     public boolean validateUserCredentials(String username, String password) {
         try {
             // Verificar si el archivo existe
             if (!fileManager.fileExists(USERS_FILE)) {
                 System.out.println("Archivo de usuarios no existe, creando usuario por defecto...");
                 createDefaultUser();
+                return false;
             }
 
             List<String> listUsuarios = fileManager.readFromFile(USERS_FILE);
+            boolean needsMigration = false;
 
-            for(String line : listUsuarios) {
-                if (line.trim().isEmpty()) continue; // Saltar líneas vacías
+            for(int i = 0; i < listUsuarios.size(); i++) {
+                String line = listUsuarios.get(i);
+                if (line.trim().isEmpty()) continue;
+
+                // Migrar formato antiguo si es necesario
+                if (SecurityUtils.isPlainTextFormat(line)) {
+                    String migratedLine = SecurityUtils.migrateToHashedFormat(line);
+                    listUsuarios.set(i, migratedLine);
+                    needsMigration = true;
+                    line = migratedLine;
+                }
+
                 String[] credentials = line.split(":");
-                if (credentials.length == 2) {
-                    if (credentials[0].equals(username) && credentials[1].equals(password)) {
+                if (credentials.length == 3 && credentials[0].equals(username)) {
+                    String storedHash = credentials[1];
+                    String salt = credentials[2];
+
+                    boolean isValid = SecurityUtils.verifyPassword(password, storedHash, salt);
+                    if (isValid) {
                         System.out.println("Credenciales válidas para: " + username);
                         return true;
                     }
                 }
             }
+
+            // Migrar archivo completo si se detectaron formatos antiguos
+            if (needsMigration) {
+                migrateUserFile(listUsuarios);
+            }
+
         } catch (Exception e) {
-            System.out.println("Credenciales inválidas para: " + username);
+            System.out.println("Error validando credenciales: " + e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * Migra todo el archivo de usuarios a formato cifrado
+     */
+    private void migrateUserFile(List<String> userLines) {
+        try {
+            // Crear backup del archivo antiguo
+            String backupFile = USERS_FILE + ".backup";
+            fileManager.writeToFile(backupFile, "", false);
+
+            for (String line : userLines) {
+                if (line.trim().isEmpty()) continue;
+
+                if (SecurityUtils.isPlainTextFormat(line)) {
+                    String migratedLine = SecurityUtils.migrateToHashedFormat(line);
+                    fileManager.writeToFile(backupFile, migratedLine + "\n", true);
+                } else {
+                    fileManager.writeToFile(backupFile, line + "\n", true);
+                }
+            }
+
+            // Reemplazar archivo original
+            fileManager.deleteFile(USERS_FILE);
+            java.nio.file.Files.move(
+                    java.nio.file.Paths.get(backupFile),
+                    java.nio.file.Paths.get(USERS_FILE)
+            );
+
+            System.out.println("Archivo de usuarios migrado a formato cifrado");
+        } catch (Exception e) {
+            System.err.println("Error migrando archivo de usuarios: " + e.getMessage());
+        }
     }
 }
