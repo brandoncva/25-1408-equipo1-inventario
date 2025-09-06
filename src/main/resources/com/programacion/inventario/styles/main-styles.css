@@ -365,3 +365,47 @@
 .combo-box .arrow {
     -fx-background-color: -fx-text-color;
 }
+/* ===== ESTILOS PARA PANTALLA ABOUT ===== */
+.about-container {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);
+}
+
+.about-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.about-version {
+    -fx-font-size: 16px;
+    -fx-text-fill: #666666;
+}
+
+.about-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-line-spacing: 1.5;
+}
+
+.about-section {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-color;
+}
+/* Estilo específico para el botón Acerca de */
+.menu-button.about-button {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 15 20;
+    -fx-min-width: 200px;
+    -fx-min-height: 50px;
+}
+
+/* O si quieres que todos los botones del menú sean más grandes */
+.menu-button {
+    -fx-font-size: 16px;
+    -fx-padding: 12 20;
+    -fx-min-height: 45px;
+}
