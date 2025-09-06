@@ -159,6 +159,17 @@ public class MainController implements Initializable, NavigationManager.Paramete
         currentScreen = NavigationManager.Screen.PRODUCTOS;
         System.out.println("Navegando a Gestión de Productos");
     }
+    /**
+     * Navega a la gestión de proveedores
+     */
+    @FXML
+    private void navigateToProveedores() {
+        showDynamicContent("Gestión de Proveedores",
+                "Administra los proveedores del sistema, agrega nuevos proveedores, " +
+                        "actualiza información de contacto y gestiona relaciones comerciales.");
+        currentScreen = NavigationManager.Screen.PROVEEDORES;
+        System.out.println("Navegando a Gestión de Proveedores");
+    }
     
     /**
      * Navega a los reportes

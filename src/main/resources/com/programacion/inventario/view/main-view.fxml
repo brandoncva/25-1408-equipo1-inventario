@@ -56,12 +56,17 @@
             
             <Button fx:id="productosButton" text="📦 Gestión de Productos" styleClass="menu-button" 
                     onAction="#navigateToProductos" maxWidth="Infinity"/>
-            
+
+            <Button fx:id="proveedoresButton" text="🚚 Gestión de Proveedores" styleClass="menu-button"
+                    onAction="#navigateToProveedores" maxWidth="Infinity"/>
+
             <Button fx:id="reportesButton" text="📈 Reportes" styleClass="menu-button" 
                     onAction="#navigateToReportes" maxWidth="Infinity"/>
             
             <Button fx:id="configuracionButton" text="⚙️ Configuración" styleClass="menu-button" 
                     onAction="#navigateToConfiguracion" maxWidth="Infinity"/>
+
+
             
             <Region VBox.vgrow="ALWAYS"/>
             
@@ -113,6 +118,7 @@
                                 onAction="#navigateToProductos"/>
                         <Button text="📊 Ver Reportes" styleClass="quick-action-button" 
                                 onAction="#navigateToReportes"/>
+
                     </HBox>
                 </VBox>
             </VBox>

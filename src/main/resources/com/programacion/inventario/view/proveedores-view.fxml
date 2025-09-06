@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.programacion.inventario.controller.ProveedoresController">
+
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+
+    <Label text="Gestión de Proveedores" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <!-- Formulario de registro -->
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="100"/>
+            <ColumnConstraints prefWidth="300"/>
+        </columnConstraints>
+
+        <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="idField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Nombre:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="nombreField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Contacto:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="contactoField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Teléfono:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="telefonoField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Email:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="emailField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Dirección:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <TextField fx:id="direccionField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <!-- Botones de acción -->
+    <HBox spacing="10">
+        <Button text="Agregar Proveedor" onAction="#agregarProveedor" fx:id="agregarButton"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="Limpiar Campos" onAction="#limpiarCampos" fx:id="limpiarButton"/>
+        <Button text="Volver al Menú" onAction="#volverAlMenu" fx:id="volverButton"
+                style="-fx-background-color: #FF9800; -fx-text-fill: white;"/>
+    </HBox>
+
+    <!-- Tabla de proveedores -->
+    <Label text="Proveedores Registrados:" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="proveedoresTable" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
+            <TableColumn fx:id="nombreColumn" text="Nombre" prefWidth="150"/>
+            <TableColumn fx:id="contactoColumn" text="Contacto" prefWidth="120"/>
+            <TableColumn fx:id="telefonoColumn" text="Teléfono" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+</VBox>

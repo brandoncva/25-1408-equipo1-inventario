@@ -44,7 +44,9 @@ public class NavigationManager {
         MAIN("main-view.fxml", "Sistema Principal - Inventario"),
         USUARIOS("usuarios-view.fxml", "Gestión de Usuarios"),
         PRODUCTOS("productos-view.fxml", "Gestión de Productos"),
+        PROVEEDORES("proveedores-view.fxml", "Gestión de Proveedores"),
         REPORTES("reportes-view.fxml", "Reportes del Sistema");
+
         
         private final String fxmlFile;
         private final String title;

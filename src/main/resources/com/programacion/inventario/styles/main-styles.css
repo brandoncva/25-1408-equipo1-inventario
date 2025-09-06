@@ -365,3 +365,14 @@
 .combo-box .arrow {
     -fx-background-color: -fx-text-color;
 }
+/* Estilos para la tabla de proveedores */
+.proveedores-table {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+}
+
+.proveedores-table .column-header {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
