@@ -62,7 +62,9 @@
             
             <Button fx:id="configuracionButton" text="⚙️ Configuración" styleClass="menu-button" 
                     onAction="#navigateToConfiguracion" maxWidth="Infinity"/>
-            
+
+
+
             <Region VBox.vgrow="ALWAYS"/>
             
             <Separator/>
@@ -113,6 +115,8 @@
                                 onAction="#navigateToProductos"/>
                         <Button text="📊 Ver Reportes" styleClass="quick-action-button" 
                                 onAction="#navigateToReportes"/>
+                        <!-- Botón para Acerca de -->
+                        <Button text="Acerca de" onAction="#navigateToAbout" styleClass="menu-button about-button"/>
                     </HBox>
                 </VBox>
             </VBox>
