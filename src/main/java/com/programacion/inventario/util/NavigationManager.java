@@ -1,5 +1,6 @@
 package com.programacion.inventario.util;
 
+import com.programacion.inventario.controller.AboutController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,7 +11,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * NavigationManager - Sistema centralizado de navegación para JavaFX
  * 
@@ -45,20 +45,25 @@ public class NavigationManager {
         USUARIOS("usuarios-view.fxml", "Gestión de Usuarios"),
         PRODUCTOS("productos-view.fxml", "Gestión de Productos"),
         PROVEEDORES("proveedores-view.fxml", "Gestión de Proveedores"),
-        REPORTES("reportes-view.fxml", "Reportes del Sistema");
+        REPORTES("reportes-view.fxml", "Reportes del Sistema"),
+        ABOUT("about-view.fxml","Acerca del Sistema");
 
-        
+
         private final String fxmlFile;
         private final String title;
-        
+
         Screen(String fxmlFile, String title) {
             this.fxmlFile = fxmlFile;
             this.title = title;
         }
-        
-        public String getFxmlFile() { return fxmlFile; }
-        public String getTitle() { return title; }
-    }
+
+        public String getFxmlFile() {
+            return fxmlFile;
+        }
+
+        public String getTitle() {
+            return title;}
+    };
     
     /**
      * Constructor privado para implementar Singleton

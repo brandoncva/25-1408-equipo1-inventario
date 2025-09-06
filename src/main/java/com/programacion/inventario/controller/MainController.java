@@ -193,6 +193,22 @@ public class MainController implements Initializable, NavigationManager.Paramete
                           "configuración de archivos y opciones avanzadas.");
         System.out.println("Navegando a Configuración");
     }
+
+    /**
+     * Navega a la pantalla "Acerca de"
+     */
+    @FXML
+    private void navigateToAbout() {
+        try {
+            NavigationManager navigationManager = NavigationManager.getInstance();
+            navigationManager.navigateTo(NavigationManager.Screen.ABOUT);
+            currentScreen = NavigationManager.Screen.ABOUT;
+            System.out.println("Navegando a Acerca de");
+        } catch (Exception e) {
+            System.err.println("Error al navegar a About: " + e.getMessage());
+            showError("Error de Navegación", "No se pudo cargar la pantalla Acerca de.");
+        }
+    }
     
     /**
      * Maneja el cierre de sesión
