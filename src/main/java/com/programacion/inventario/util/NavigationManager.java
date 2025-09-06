@@ -11,7 +11,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * NavigationManager - Sistema centralizado de navegación para JavaFX
  * 
@@ -45,9 +44,10 @@ public class NavigationManager {
         MAIN("main-view.fxml", "Sistema Principal - Inventario"),
         USUARIOS("usuarios-view.fxml", "Gestión de Usuarios"),
         PRODUCTOS("productos-view.fxml", "Gestión de Productos"),
+        PROVEEDORES("proveedores-view.fxml", "Gestión de Proveedores"),
         REPORTES("reportes-view.fxml", "Reportes del Sistema"),
-
         ABOUT("about-view.fxml","Acerca del Sistema");
+
 
         private final String fxmlFile;
         private final String title;
